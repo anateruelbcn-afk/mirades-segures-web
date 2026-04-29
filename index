@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ca" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirades Segures | Gestión Institucional Eclipse 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #e2b065;
+            --bg-deep: #05070a;
+        }
+        body {
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            font-family: 'Montserrat', sans-serif;
+            background-image: linear-gradient(rgba(5, 7, 10, 0.5), rgba(5, 7, 10, 0.7)), 
+                              url('02.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateY(-8px);
+        }
+        
+        .nav-glass {
+            background: rgba(5, 7, 10, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+            color: #000;
+            font-weight: 800;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .btn-accent:hover {
+            background-color: #f0c58a;
+            box-shadow: 0 0 30px rgba(226, 176, 101, 0.4);
+            transform: scale(1.03);
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .countdown-box {
+            background: rgba(226, 176, 101, 0.1);
+            border: 1px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            min-width: 100px;
+        }
+
+        .loader {
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .mobile-fab {
+                position: fixed;
+                bottom: 25px;
+                right: 20px;
+                left: 20px;
+                z-index: 100;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- BOTÓN FLOTANTE MÓVIL -->
+    <div class="mobile-fab md:hidden">
+        <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="btn-accent w-full py-5 rounded-2xl flex justify-center items-center shadow-2xl text-sm font-bold">
+            <span data-i18n="reserva-stock-price">Reserva d'estoc (0,45€)</span>
+        </a>
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <nav class="fixed w-full z-50 top-0 nav-glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex items-center gap-5">
+                <div class="flex items-center justify-center min-w-[50px]">
+                    <img src="01.jpg" alt="Mirades Segures Logo" class="h-12 md:h-16 w-auto object-contain block grayscale brightness-200">
+                </div>
+                <div class="hidden sm:flex flex-col leading-tight border-l border-white/20 pl-5">
+                    <span class="font-serif italic text-2xl text-white">Mirades <span class="text-accent">Segures</span></span>
+                    <span class="text-[10px] uppercase tracking-[0.4em] text-slate-400 font-bold" data-i18n="tagline">Seguretat · Ciència · Territori</span>
+                </div>
+            </div>
+            
+            <div class="hidden md:flex gap-8 items-center">
+                <a href="#context" class="text-xs uppercase tracking-widest font-bold hover:text-accent transition-colors" data-i18n="nav-context">Context</a>
+                <a href="#proposta" class="text-xs uppercase tracking-widest font-bold hover:text-accent transition-colors" data-i18n="nav-recursos">Recursos</a>
+                <a href="#planner" class="text-xs uppercase tracking-widest font-bold text-accent hover:underline transition-all" data-i18n="nav-planner">Planificador IA ✨</a>
+                
+                <div class="flex bg-white/5 rounded-full p-1 border border-white/10 ml-4">
+                    <button onclick="changeLang('ca')" id="btn-ca" class="px-4 py-1.5 text-[10px] font-bold rounded-full transition-all bg-accent text-black">CAT</button>
+                    <button onclick="changeLang('es')" id="btn-es" class="px-4 py-1.5 text-[10px] font-bold rounded-full transition-all text-white/60 hover:text-white">ESP</button>
+                </div>
+
+                <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="btn-accent px-8 py-3.5 rounded-xl text-xs shadow-lg ml-4" data-i18n="reserva-stock">Reserva d'estoc</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32">
+        <div class="max-w-5xl reveal active">
+            <div class="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-accent/30 bg-accent/5 mb-10 backdrop-blur-sm shadow-xl">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
+                </span>
+                <span class="text-accent tracking-[0.3em] uppercase text-xs font-black" data-i18n="hero-date">12 d'Agost 2026 · Espanya</span>
+            </div>
+            
+            <h1 class="font-serif text-5xl md:text-8xl mb-10 italic leading-[1.1] text-white tracking-tight drop-shadow-2xl">
+                <span data-i18n="hero-title">Ajudem els ajuntaments</span> <br> 
+                <span class="font-light not-italic text-accent text-4xl md:text-6xl block mt-4 tracking-normal opacity-95" data-i18n="hero-subtitle">a gestionar l'eclipsi.</span>
+            </h1>
+            
+            <div id="countdown" class="flex justify-center gap-4 md:gap-8 mb-16 text-white">
+                <div class="countdown-box shadow-2xl backdrop-blur-md">
+                    <span id="days" class="block text-3xl md:text-5xl font-extrabold text-accent">--</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] opacity-80 font-bold" data-i18n="days">Dies</span>
+                </div>
+                <div class="countdown-box shadow-2xl backdrop-blur-md">
+                    <span id="hours" class="block text-3xl md:text-5xl font-extrabold text-accent">--</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] opacity-80 font-bold" data-i18n="hours">Hores</span>
+                </div>
+                <div class="countdown-box shadow-2xl backdrop-blur-md">
+                    <span id="mins" class="block text-3xl md:text-5xl font-extrabold text-accent">--</span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] opacity-80 font-bold" data-i18n="minutes">Min</span>
+                </div>
+            </div>
+
+            <p class="text-xl md:text-2xl text-slate-200 max-w-3xl mx-auto font-light leading-relaxed mb-16 px-4" data-i18n="hero-desc">
+                Planificació 360º per a municipis en la franja de totalitat: 
+                <span class="font-bold text-white">Seguretat garantida, divulgació científica i dinamització del territori nacional.</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="#proposta" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-12 py-5 rounded-2xl font-bold hover:bg-white hover:text-black transition-all shadow-xl text-xs uppercase tracking-widest" data-i18n="btn-recursos">
+                    Recursos Municipals
+                </a>
+                <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="btn-accent px-12 py-5 rounded-2xl font-bold shadow-xl text-xs uppercase" data-i18n="btn-reservar">
+                    Reservar Estoc ara
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ANÀLISI DE SITUACIÓ -->
+    <section id="context" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto text-center mb-16">
+            <h2 class="font-serif text-4xl md:text-5xl italic text-white mb-4" data-i18n="analisis-title">Anàlisi de Situació</h2>
+            <p class="text-accent uppercase tracking-widest text-xs font-bold" data-i18n="analisis-tags">Context · Responsabilitat · Dinamització</p>
+        </div>
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-3 gap-10 items-stretch">
+                <div class="glass-card p-12 flex flex-col reveal">
+                    <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-10 border border-accent/20">
+                        <i class="fa-solid fa-moon-stars text-accent text-3xl"></i>
+                    </div>
+                    <h2 class="font-serif text-3xl mb-8 text-white italic leading-tight" data-i18n="card1-title">Esdeveniment únic al segle</h2>
+                    <p class="text-slate-300 font-light leading-relaxed text-base mb-8 flex-grow" data-i18n="card1-desc">
+                        El darrer eclipsi total a Espanya va ser el 1905. El 12 d’agost de 2026, el territori nacional serà l'epicentre mundial d'aquest fenomen astronòmic.
+                    </p>
+                    <div class="pt-8 border-t border-white/10">
+                        <span class="text-xs uppercase tracking-widest text-accent font-black" data-i18n="card1-tag">Impacte Històric</span>
+                    </div>
+                </div>
+                <div class="glass-card p-12 border-accent/30 flex flex-col reveal shadow-[0_0_60px_rgba(226,176,101,0.05)]">
+                    <div class="w-16 h-16 rounded-2xl bg-accent/20 flex items-center justify-center mb-10 border border-accent/40">
+                        <i class="fa-solid fa-gavel text-accent text-3xl"></i>
+                    </div>
+                    <h2 class="font-serif text-3xl mb-8 text-white italic leading-tight" data-i18n="card2-title">Responsabilitat Municipal</h2>
+                    <p class="text-slate-300 font-light leading-relaxed text-base mb-8 flex-grow" data-i18n="card2-desc">
+                        La gestió de la salut ocular és competència directa. Una falta de previsió pot derivar en responsabilitats patrimonials.
+                    </p>
+                    <ul class="text-slate-200 text-sm space-y-4 font-medium mb-10">
+                        <li class="flex items-start gap-4"><i class="fa-solid fa-shield-check text-accent text-lg mt-0.5"></i> <span data-i18n="card2-list1">Prevenció de riscos oculars</span></li>
+                        <li class="flex items-start gap-4"><i class="fa-solid fa-shield-check text-accent text-lg mt-0.5"></i> <span data-i18n="card2-list2">Control de la salut pública</span></li>
+                    </ul>
+                </div>
+                <div class="glass-card p-12 flex flex-col reveal">
+                    <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-10 border border-accent/20">
+                        <i class="fa-solid fa-chart-line-up text-accent text-3xl"></i>
+                    </div>
+                    <h2 class="font-serif text-3xl mb-8 text-white italic leading-tight" data-i18n="card3-title">Dinamització Econòmica</h2>
+                    <p class="text-slate-300 font-light leading-relaxed text-base mb-8 flex-grow" data-i18n="card3-desc">
+                        Atracció de turisme de qualitat i impuls directe al comerç local en tot l'Estat. Els municipis preparats seran els referents.
+                    </p>
+                    <div class="pt-8 border-t border-white/10">
+                        <span class="text-xs uppercase tracking-widest text-accent font-black" data-i18n="card3-tag">Posicionament Territorial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECURSOS INSTITUCIONALS -->
+    <section id="proposta" class="py-32 px-6 bg-white/[0.02]">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-24 reveal">
+                <h2 class="font-serif text-5xl md:text-7xl mb-8 italic text-white tracking-tight" data-i18n="recursos-title">Recursos Institucionals</h2>
+                <p class="text-slate-400 uppercase tracking-[0.5em] text-xs font-black italic" data-i18n="recursos-subtitle">Gestió · Seguretat · Comunicació</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-20 text-left">
+                <div class="glass-card p-8 flex flex-col items-center text-center reveal text-shadow-lg">
+                    <div class="w-full mb-8 overflow-hidden rounded-xl shadow-2xl border border-white/10 aspect-[3/4]">
+                        <img src="04.jpg" alt="Informe Tècnic" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <h3 class="text-white font-extrabold text-lg uppercase tracking-widest mb-4" data-i18n="res1-title">Justificació Tècnica</h3>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-8 flex-grow px-2" data-i18n="res1-desc">
+                        Memòria detallada amb els protocols de seguretat i riscos sanitaris per al 2026.
+                    </p>
+                    <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="w-full bg-white/5 border border-white/10 py-4 rounded-xl text-accent font-black text-xs tracking-widest uppercase hover:bg-accent hover:text-black transition-all" data-i18n="res1-btn">Vull rebre l'informe</a>
+                </div>
+                <div class="glass-card p-8 flex flex-col items-center text-center reveal border-accent/40 shadow-[0_0_30px_rgba(226,176,101,0.1)]">
+                    <div class="w-full mb-8 overflow-hidden rounded-xl shadow-2xl border border-white/10 aspect-[3/4]">
+                        <img src="03.jpg" alt="Material Homologat" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <h3 class="text-white font-extrabold text-lg uppercase tracking-widest mb-4" data-i18n="res2-title">Material Homologat</h3>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-8 flex-grow px-4" data-i18n="res2-desc">
+                        Protecció certificada sota la normativa <span class="text-white font-bold">CE ISO 12312-2</span>.
+                    </p>
+                    <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="w-full btn-accent py-5 rounded-xl text-black font-black text-xs tracking-widest uppercase shadow-lg" data-i18n="res2-btn">Pedido ulleres ISO</a>
+                </div>
+                <div class="glass-card p-8 text-center flex flex-col reveal items-center">
+                    <div class="w-full mb-8 overflow-hidden rounded-xl shadow-2xl border border-white/10 aspect-[3/4]">
+                        <img src="05.jpg" alt="Kit de Continguts" class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <h3 class="text-white font-extrabold text-lg uppercase tracking-widest mb-4" data-i18n="res3-title">Kit de Continguts</h3>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-8 flex-grow px-4" data-i18n="res3-desc">
+                        Simulacions audiovisuals i material gràfic per a canals institucionals.
+                    </p>
+                    <a href="https://forms.gle/SAE8uYtBPsT1y7WV6" target="_blank" class="w-full bg-white/5 border border-white/10 py-4 rounded-xl text-accent font-black text-xs tracking-widest uppercase hover:bg-accent hover:text-black transition-all" data-i18n="res3-btn">Kit divulgatiu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLANIFICADOR IA (Sección Final) -->
+    <section id="planner" class="py-32 px-6">
+        <div class="max-w-4xl mx-auto glass-card p-10 md:p-16 border-accent/20 relative overflow-hidden shadow-2xl bg-black/30">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <i class="fa-solid fa-sparkles text-8xl text-accent"></i>
+            </div>
+            
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-4xl md:text-5xl italic text-white mb-4" data-i18n="planner-title">Planificador d'Esdeveniments IA ✨</h2>
+                <p class="text-slate-400 text-lg font-light" data-i18n="planner-subtitle">Obtingui una proposta preliminar de seguretat i dinamització per al seu municipi.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-10 text-shadow-lg">
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-widest font-bold text-accent" data-i18n="label-municipi">Nom del Municipi (España)</label>
+                    <input type="text" id="mun-name" placeholder="Ex: Madrid, Burgos, Sevilla..." class="w-full bg-white/5 border border-white/20 rounded-xl py-4 px-6 text-white focus:outline-none focus:border-accent transition-all">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] uppercase tracking-widest font-bold text-accent" data-i18n="label-poblacio">Població Estimada</label>
+                    <select id="mun-pop" class="w-full bg-white/5 border border-white/20 rounded-xl py-4 px-6 text-white focus:outline-none focus:border-accent transition-all appearance-none">
+                        <option value="Menys de 1.000" class="bg-black" data-i18n="pop-1">Menys de 1.000</option>
+                        <option value="1.000 - 5.000" class="bg-black" data-i18n="pop-2">1.000 - 5.000</option>
+                        <option value="5.000 - 20.000" class="bg-black" data-i18n="pop-3">5.000 - 20.000</option>
+                        <option value="Més de 20.000" class="bg-black" data-i18n="pop-4">Més de 20.000</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="generatePlan()" id="btn-planner" class="w-full btn-accent py-5 rounded-2xl flex justify-center items-center gap-4 text-sm shadow-xl">
+                <span data-i18n="btn-generate">Generar Proposta amb IA</span>
+                <div id="planner-loader" class="loader hidden"></div>
+            </button>
+
+            <div id="planner-result" class="mt-10 p-8 bg-black/40 border border-white/10 rounded-3xl hidden text-slate-200 text-sm leading-relaxed whitespace-pre-wrap max-h-[500px] overflow-y-auto italic font-light">
+                <!-- Resultado de la IA -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-20 border-t border-white/10 bg-black">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row justify-between items-center gap-16 text-center lg:text-left">
+            <div>
+                <div class="mb-8">
+                    <img src="01.jpg" alt="Mirades Segures" class="h-12 mx-auto lg:mx-0 mb-4 object-contain grayscale brightness-200">
+                    <p class="text-xs uppercase tracking-[0.4em] text-accent font-black" data-i18n="tagline">Seguretat · Ciència · Territori</p>
+                </div>
+                <p class="text-sm text-slate-500 font-medium italic max-w-sm" data-i18n="footer-desc">
+                    Especialistes en la gestió institucional de l'eclipsi solar total 2026 en tot el territori espanyol.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-12 text-sm text-slate-300 font-bold tracking-widest uppercase">
+                <a href="mailto:ana@mirades-segures.cat" class="flex items-center gap-4 hover:text-accent transition-all justify-center lg:justify-start">
+                    <i class="fa-solid fa-envelope text-accent text-xl"></i> ana@mirades-segures.cat
+                </a>
+                <a href="tel:624156986" class="flex items-center gap-4 hover:text-accent transition-all justify-center lg:justify-start">
+                    <i class="fa-solid fa-phone text-accent text-xl"></i> 624 156 986
+                </a>
+            </div>
+        </div>
+        <div class="mt-20 pt-10 border-t border-white/5 text-center text-[10px] text-slate-700 uppercase tracking-widest">
+            © 2024 Mirades Segures · Eclipsi Solar 2026 · Espanya
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            ca: {
+                "tagline": "Seguretat · Ciència · Territori",
+                "nav-context": "Context",
+                "nav-recursos": "Recursos",
+                "nav-planner": "Planificador IA ✨",
+                "reserva-stock": "Reserva d'estoc",
+                "reserva-stock-price": "Reserva d'estoc (0,45€)",
+                "hero-date": "12 d'Agost 2026 · Espanya",
+                "hero-title": "Ajudem els ajuntaments",
+                "hero-subtitle": "a gestionar l'eclipsi.",
+                "days": "Dies", "hours": "Hores", "minutes": "Min",
+                "hero-desc": "Planificació 360º per a municipis en la franja de totalitat: Seguretat garantida, divulgació científica i dinamització del territori nacional.",
+                "btn-recursos": "Recursos Municipals",
+                "btn-reservar": "Reservar Estoc ara",
+                "planner-title": "Planificador d'Esdeveniments IA ✨",
+                "planner-subtitle": "Obtingui una proposta preliminar de seguretat i dinamització per al seu municipi.",
+                "label-municipi": "Nom del Municipi",
+                "label-poblacio": "Població Estimada",
+                "pop-1": "Menys de 1.000", "pop-2": "1.000 - 5.000", "pop-3": "5.000 - 20.000", "pop-4": "Més de 20.000",
+                "btn-generate": "Generar Proposta amb IA",
+                "analisis-title": "Anàlisi de Situació",
+                "analisis-tags": "Context · Responsabilitat · Dinamització",
+                "card1-title": "Esdeveniment únic al segle",
+                "card1-desc": "El darrer eclipsi total a Espanya va ser el 1905. El 12 d’agost de 2026, el territori nacional serà l'epicentre mundial d'aquest fenomen astronòmic.",
+                "card1-tag": "Impacte Històric",
+                "card2-title": "Responsabilitat Municipal",
+                "card2-desc": "La gestió de la salut ocular és competència directa. Una falta de previsió pot derivar en responsabilitats patrimonials.",
+                "card2-list1": "Prevenció de riscos oculars", "card2-list2": "Control de la salut pública",
+                "card3-title": "Dinamització Econòmica",
+                "card3-desc": "Atracció de turisme de qualitat i impuls directe al comerç local en tot l'Estat. Els municipis preparats seran els referents.",
+                "card3-tag": "Posicionament Territorial",
+                "recursos-title": "Recursos Institucionals",
+                "recursos-subtitle": "Gestió · Seguretat · Comunicació",
+                "res1-title": "Justificació Tècnica",
+                "res1-desc": "Memòria detallada amb els protocols de seguretat i riscos sanitaris per al 2026.",
+                "res1-btn": "Vull rebre l'informe",
+                "res2-title": "Material Homologat",
+                "res2-desc": "Protecció certificada sota la normativa CE ISO 12312-2.",
+                "res2-btn": "Pedido ulleres ISO",
+                "res3-title": "Kit de Continguts",
+                "res3-desc": "Simulacions audiovisuals i material gràfic per a canals institucionals.",
+                "res3-btn": "Kit divulgatiu",
+                "footer-desc": "Especialistes en la gestió institucional de l'eclipsi solar total 2026 en tot el territori espanyol."
+            },
+            es: {
+                "tagline": "Seguridad · Ciencia · Territorio",
+                "nav-context": "Contexto",
+                "nav-recursos": "Recursos",
+                "nav-planner": "Planificador IA ✨",
+                "reserva-stock": "Reservar stock",
+                "reserva-stock-price": "Reserva de stock (0,45€)",
+                "hero-date": "12 de Agosto 2026 · España",
+                "hero-title": "Ayudamos a los ayuntamientos",
+                "hero-subtitle": "a gestionar el eclipse.",
+                "days": "Días", "hours": "Horas", "minutes": "Min",
+                "hero-desc": "Planificación 360º para municipios en la franja de totalidad: Seguridad garantizada, divulgación científica y dinamización del territorio nacional.",
+                "btn-recursos": "Recursos Municipales",
+                "btn-reservar": "Reservar Stock ahora",
+                "planner-title": "Planificador de Eventos IA ✨",
+                "planner-subtitle": "Obtenga una propuesta preliminar de seguridad y dinamización para su municipio.",
+                "label-municipi": "Nombre del Municipio",
+                "label-poblacio": "Población Estimada",
+                "pop-1": "Menos de 1.000", "pop-2": "1.000 - 5.000", "pop-3": "5.000 - 20.000", "pop-4": "Más de 20.000",
+                "btn-generate": "Generar Propuesta con IA",
+                "analisis-title": "Análisis de Situación",
+                "analisis-tags": "Contexto · Responsabilidad · Dinamización",
+                "card1-title": "Evento único en el siglo",
+                "card1-desc": "El último eclipse total en España fue en 1905. El 12 de agosto de 2026, el territorio nacional será el epicentro mundial de este fenómeno astronómico.",
+                "card1-tag": "Impacto Histórico",
+                "card2-title": "Responsabilidad Municipal",
+                "card2-desc": "La gestión de la salud ocular es competencia directa. Una falta de previsión puede derivar en responsabilidades patrimoniales.",
+                "card2-list1": "Prevención de riesgos oculares", "card2-list2": "Control de la salud pública",
+                "card3-title": "Dinamización Económica",
+                "card3-desc": "Atracción de turismo de calidad e impulso directo al comercio local en todo el Estado. Los municipios preparados serán los referentes.",
+                "card3-tag": "Posicionamiento Territorial",
+                "recursos-title": "Recursos Institucionales",
+                "recursos-subtitle": "Gestión · Seguridad · Comunicación",
+                "res1-title": "Justificación Técnica",
+                "res1-desc": "Memoria detallada con los protocolos de seguridad y riesgos sanitarios para el 2026.",
+                "res1-btn": "Quiero recibir el informe",
+                "res2-title": "Material Homologado",
+                "res2-desc": "Protección certificada bajo la normativa CE ISO 12312-2.",
+                "res2-btn": "Pedido gafas ISO",
+                "res3-title": "Kit de Contenidos",
+                "res3-desc": "Simulaciones audiovisuales y material gráfico para canales institucionales.",
+                "res3-btn": "Kit divulgativo",
+                "footer-desc": "Especialistas en la gestión institucional del eclipse solar total 2026 en todo el territorio español."
+            }
+        };
+
+        let currentLang = 'ca';
+
+        function changeLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.getElementById('btn-ca').className = lang === 'ca' ? 'px-4 py-1.5 text-[10px] font-bold rounded-full bg-accent text-black' : 'px-4 py-1.5 text-[10px] font-bold rounded-full text-white/60 hover:text-white';
+            document.getElementById('btn-es').className = lang === 'es' ? 'px-4 py-1.5 text-[10px] font-bold rounded-full bg-accent text-black' : 'px-4 py-1.5 text-[10px] font-bold rounded-full text-white/60 hover:text-white';
+        }
+
+        const apiKey = ""; 
+
+        async function callGemini(query) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const sys = `Experto en seguridad y astronomía. Responde en ${currentLang === 'ca' ? 'Catalán' : 'Español'}.`;
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: query }] }], systemInstruction: { parts: [{ text: sys }] } })
+                    });
+                    const data = await res.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (e) { await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000)); }
+            }
+            return "Error de conexión.";
+        }
+
+        async function generatePlan() {
+            const mun = document.getElementById('mun-name').value;
+            const pop = document.getElementById('mun-pop').value;
+            if (!mun) { alert(currentLang === 'ca' ? "Introdueix municipi" : "Introduce municipio"); return; }
+            const btn = document.getElementById('btn-planner');
+            const loader = document.getElementById('planner-loader');
+            const res = document.getElementById('planner-result');
+            btn.disabled = true; loader.classList.remove('hidden'); res.classList.add('hidden');
+            const result = await callGemini(`Plan para ${mun} España (población ${pop}) para el eclipse 2026. Seguridad, dinamización y gafas ISO.`);
+            res.textContent = result; res.classList.remove('hidden'); loader.classList.add('hidden'); btn.disabled = false;
+        }
+
+        function reveal() {
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add("active");
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+
+        const eventDate = new Date("August 12, 2026 18:00:00").getTime();
+        setInterval(() => {
+            const dist = eventDate - new Date().getTime();
+            document.getElementById("days").innerHTML = Math.floor(dist / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerHTML = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("mins").innerHTML = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+    </script>
+</body>
+</html>
